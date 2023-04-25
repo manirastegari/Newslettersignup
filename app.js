@@ -37,17 +37,27 @@ app.post("/", function(req, res) {
 
     const options = {
         method: "POST", 
-        auth: "mani16032:85a13711615791f41420bcc78e9de9a2-us21"
+        auth: "mani16032:7bf36a5e6f07b3998300324ab852ec6b-us21"
     }
 
     const request = https.request(url, options, function(response) {
+
+        if (response.statusCode === 200) {
+            // res.send("Successfully subscribed!");
+            res.sendFile(__dirname + "/success.html");
+        } else {
+            // res.send("There was an error with signin up, please try again!");
+            res.sendFile(__dirname + "/failure.html");
+
+        }
+
         response.on("data", function(data) {
             console.log(JSON.parse(data));
-        })
+        });
 
-    })
-
-    request.write(jsonData);
+    });
+    // commented out to test the failure
+    // request.write(jsonData);
     request.end();
 
 });
@@ -64,7 +74,9 @@ app.post("/", function(req, res) {
 // }
 // EOF
 
-
+app.post("/failure", function(req, res) {
+    res.redirect("/");
+})
 
 app.listen(3000, function() {
     console.log("Server is up and running on port 3000.");
@@ -72,6 +84,6 @@ app.listen(3000, function() {
 
 
 // mailchimp API Key
-// 85a13711615791f41420bcc78e9de9a2-us21
+// 7bf36a5e6f07b3998300324ab852ec6b-us21
 // List ID
 // Typically, this is what they want: 3fd2ee4f4c.
